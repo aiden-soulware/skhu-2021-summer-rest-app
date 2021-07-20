@@ -1,0 +1,89 @@
+@import "common.scss";
+
+#app {
+  font-family: "Noto Sans", "Noto Sans KR", sans-serif;
+  overflow-x: scroll;
+  overflow: auto;
+}
+
+
+.basics-dialog {
+  border-radius: 1rem;
+  box-shadow: unset;
+  .v-card {
+    .dialog-header-close {
+      height: 2.8rem !important;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 1.65rem 1.55rem 0 1.55rem;
+      border-bottom: 0;
+      .btn-close-black {
+        width: 1.18rem;
+        height: 1.18rem;
+        margin-left: auto !important;
+
+        em {
+          width: 1.18rem !important;
+          height: 1.18rem !important;
+          background: url("../../assets/images/ic_close.png") no-repeat center;
+          background-size: 120%;
+          font-size: 0 !important;
+        }
+      }
+    }
+
+    .v-card__text {
+      padding: 2.5rem 1rem 2.5rem 1rem;
+      p {
+        @extend .font-26, .font-normal;
+        margin-bottom: 0;
+        text-align: center;
+        color: $black;
+        line-height: 1.38;
+        letter-spacing: -0.05rem;
+      }
+      h1 {
+        @extend .font-28, .font-500;
+        margin-bottom: 3.7%;
+        text-align: center;
+        color: $black;
+        line-height: 1.38;
+        letter-spacing: -0.05rem;
+      }
+    }
+    .v-card__actions {
+      padding: 0;
+      border-top: 0.05rem solid #e5e5e5;
+      .border-right-1 {
+        border-right: 0.05rem solid #e5e5e5;
+      }
+      .v-btn {
+        @extend .font-28, .font-normal;
+        min-width: unset;
+        min-height: unset;
+        height: 3.4rem;
+        padding: 0;
+        border-radius: 0;
+        line-height: normal;
+        letter-spacing: normal;
+      }
+      .v-btn:before {
+        opacity: 0;
+      }
+      /* 팝업 하단에 scroll 생기는 문제로 추가 */
+      .row {
+        margin: 0 !important;
+      }
+      .col {
+        padding: 0 !important;
+      }
+    }
+  }
+}
+
+.basics-dialog .close-header-content {
+  .v-card__text {
+    padding-top: 1.3rem;
+  }
+}
