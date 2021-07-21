@@ -12,7 +12,6 @@ const actions = {
   getList({ commit }) {
     return http.process('user', 'list').then((data) => {
       commit('setListData', data);
-      console.log(data);
     });
     /* return http.process("user", "item", { id: 1 }).then(data => {
       commit("setListData", data);

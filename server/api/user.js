@@ -3,11 +3,11 @@ const mysql = require('../db/mysql');
 module.exports.userMapping = (user) => {
   return {
     id: user.id,
-    firstName: user.first_name,
-    lastName: user.last_name,
+    first_name: user.first_name,
+    last_name: user.last_name,
     email: user.email,
     avatar: user.avatar,
-    createTime: user.create_time,
+    create_Time: user.create_time,
   };
 };
 
@@ -20,6 +20,6 @@ module.exports.list = (req, res) => {
 
   mysql.query(sql, (err, rows) => {
     if (err) return console.log(`list error: ${err}`);
-    res.json({ success: true, users: this.userListMapping(rows) });
+    res.json({ success: true, data: this.userListMapping(rows) });
   });
 };

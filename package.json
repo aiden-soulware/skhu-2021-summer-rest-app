@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start-client": "vue-cli-service serve",
-    "start-server": "node ./backend/bin/www",
+    "start-server": "node ./server/bin/www",
     "start": "concurrently \"yarn start-server\" \"yarn start-client\"",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -14,6 +14,7 @@
     "concurrently": "^6.2.0",
     "cookie-parser": "~1.4.4",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "^4.17.1",
     "http-errors": "~1.6.3",

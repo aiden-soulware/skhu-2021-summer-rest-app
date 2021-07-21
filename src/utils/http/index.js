@@ -3,9 +3,11 @@ import domain from './domain.js';
 import { EventBus } from '@/event-bus.js';
 
 // const WAS_URL = process.env.VUE_APP_WAS;
+const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
 const axiosInstance = axios.create({
-  baseURL: '/',
+  // baseURL: '/',
+  baseURL: SERVER_URL,
   headers: { 'Cache-Control': 'no-cache' },
 });
 
@@ -44,7 +46,6 @@ const http = {
         let newUrl = _generateUrl(info.url, params, mapping);
         // let base = WAS_URL;
         // newUrl = base + newUrl;
-        console.log(newUrl);
         let method = 'get';
         if (info.task == 'post' || info.task == 'uploadFile') {
           method = 'post';
@@ -66,13 +67,13 @@ const http = {
             params: newParmas,
             headers: headers,
           };
+
           p = axiosInstance[method](newUrl, opt);
         } else if (method == 'post' || method == 'put' || method == 'delete') {
           p = axiosInstance[method](newUrl, newParmas, {
             headers: headers,
           });
         }
-
         return p
           .then((response) => {
             resolve(response.data);

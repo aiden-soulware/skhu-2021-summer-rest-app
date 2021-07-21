@@ -1,4 +1,4 @@
-const user = '/api/user';
+const user = '/user';
 
 export default {
   user: {

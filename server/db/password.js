@@ -1,7 +1,7 @@
 module.exports.mysqlInfo = {
-  host: 'localhost',
+  host: 'rest-app-soulware.cgd73tyjco0m.ap-northeast-2.rds.amazonaws.com',
   user: 'soulware',
-  password: '210721',
+  password: 'soul210721',
   database: 'rest-app-soulware',
   port: '3306',
 };
