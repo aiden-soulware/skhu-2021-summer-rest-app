@@ -1,15 +1,25 @@
 {
-  "name": "skhu-rest-app",
+  "name": "rest-app-soulware",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "start-client": "vue-cli-service serve",
+    "start-server": "node ./backend/bin/www",
+    "start": "concurrently \"yarn start-server\" \"yarn start-client\"",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "concurrently": "^6.2.0",
+    "cookie-parser": "~1.4.4",
     "core-js": "^3.8.3",
+    "debug": "~2.6.9",
+    "express": "^4.17.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "pug": "2.0.0-beta11",
     "regenerator-runtime": "^0.13.7",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",

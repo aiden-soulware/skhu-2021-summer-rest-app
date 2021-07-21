@@ -2,7 +2,7 @@ import axios from 'axios';
 import domain from './domain.js';
 import { EventBus } from '@/event-bus.js';
 
-const WAS_URL = process.env.VUE_APP_WAS;
+// const WAS_URL = process.env.VUE_APP_WAS;
 
 const axiosInstance = axios.create({
   baseURL: '/',
@@ -42,9 +42,9 @@ const http = {
       if (info) {
         let headers = {};
         let newUrl = _generateUrl(info.url, params, mapping);
-        let base = WAS_URL;
-        newUrl = base + newUrl;
-
+        // let base = WAS_URL;
+        // newUrl = base + newUrl;
+        console.log(newUrl);
         let method = 'get';
         if (info.task == 'post' || info.task == 'uploadFile') {
           method = 'post';
