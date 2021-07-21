@@ -1,11 +1,10 @@
-@import "common.scss";
+@import 'common.scss';
 
 #app {
-  font-family: "Noto Sans", "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
   overflow-x: scroll;
   overflow: auto;
 }
-
 
 .basics-dialog {
   border-radius: 1rem;
@@ -26,7 +25,7 @@
         em {
           width: 1.18rem !important;
           height: 1.18rem !important;
-          background: url("../../assets/images/ic_close.png") no-repeat center;
+          background: url('../../assets/images/ic_close.png') no-repeat center;
           background-size: 120%;
           font-size: 0 !important;
         }
@@ -86,4 +85,33 @@
   .v-card__text {
     padding-top: 1.3rem;
   }
+}
+
+.v-list {
+  &.theme--light {
+    &.v-sheet {
+      :hover {
+        background: #eee;
+        cursor: pointer;
+        .v-avatar {
+          :hover {
+            animation-duration: 0.75s;
+            animation-name: fadein;
+            background: none;
+          }
+          .v-responsive__sizer {
+            display: none;
+          }
+        }
+      }
+      .v-list-item__content {
+        .v-list-item__title {
+          line-height: 2;
+        }
+      }
+    }
+  }
+}
+.router {
+  text-decoration: none;
 }

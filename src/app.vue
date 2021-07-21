@@ -14,13 +14,31 @@
       <v-container fluid>
         <router-view></router-view>
       </v-container>
-      <v-snackbar v-model="snackbar.open" :color="snackbar.color" class="toast-cover" content-class="toast-content" :multi-line="true" :timeout="5000">
+      <v-snackbar
+        v-model="snackbar.open"
+        :color="snackbar.color"
+        class="toast-cover"
+        content-class="toast-content"
+        :multi-line="true"
+        :timeout="5000"
+      >
         {{ snackbar.text }}
       </v-snackbar>
       <template v-for="(item, i) in popups">
-        <v-dialog :persistent="item.opt.persistent" v-model="item._open" content-class="basics-dialog" :key="`popup-${i}`" style="overflow-x: hidden;">
-          <sw-dialog v-if="item._open" :inputData="item" @close="_closePopup('close', item)" @cancel="_closePopup('cancel', item)" @ok="_closePopup('ok', item)" />
-
+        <v-dialog
+          :persistent="item.opt.persistent"
+          v-model="item._open"
+          content-class="basics-dialog"
+          :key="`popup-${i}`"
+          style="overflow-x: hidden;"
+        >
+          <sw-dialog
+            v-if="item._open"
+            :inputData="item"
+            @close="_closePopup('close', item)"
+            @cancel="_closePopup('cancel', item)"
+            @ok="_closePopup('ok', item)"
+          />
         </v-dialog>
       </template>
     </v-main>
@@ -28,9 +46,9 @@
 </template>
 
 <script>
-import SwDrawer from "@/components/drawer";
-import SwDialog from "@/components/dialog";
-import { EventBus } from "@/event-bus";
+import SwDrawer from '@/components/drawer';
+import SwDialog from '@/components/dialog';
+import { EventBus } from '@/event-bus';
 
 export default {
   components: {
@@ -41,24 +59,34 @@ export default {
     return {
       snackbar: {
         open: false,
-        color: "",
-        text: "",
+        color: '',
+        text: '',
       },
       popups: [],
       openMenu: false,
-    }
+    };
   },
   mounted() {
     this.init();
   },
   methods: {
     init() {
-      console.log("app init...")
+      console.log('app init...');
 
-      EventBus.$on("alert:success", message => this.snackbar = { open: true, color: "primary", text: message });
-      EventBus.$on("alert:fail", message => this.snackbar = { open: true, color: "error", text: message });
-      EventBus.$on("dialog:open", data => {
-        this.popups.push(Object.assign(data, { _open: true, _id: this._generateId(8) }))
+      EventBus.$on(
+        'alert:success',
+        (message) =>
+          (this.snackbar = { open: true, color: 'primary', text: message })
+      );
+      EventBus.$on(
+        'alert:fail',
+        (message) =>
+          (this.snackbar = { open: true, color: 'error', text: message })
+      );
+      EventBus.$on('dialog:open', (data) => {
+        this.popups.push(
+          Object.assign(data, { _open: true, _id: this._generateId(8) })
+        );
       });
     },
 
@@ -84,9 +112,9 @@ export default {
       if (type == 'cancel' && item.cancel) {
         item.cancel();
       }
-      const idx = this.popups.findIndex(v => v._id == item._id);
+      const idx = this.popups.findIndex((v) => v._id == item._id);
       if (idx > -1 && !item.opt.persistent) this.popups.splice(idx, 1);
     },
-  }
-}
+  },
+};
 </script>

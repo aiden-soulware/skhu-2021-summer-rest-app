@@ -1,19 +1,25 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-const Home = () => import(/* webpackChunkName: "common" */ '../views/home.vue')
+const Home = () => import(/* webpackChunkName: "common" */ '../views/home.vue');
+const User = () => import('../views/user.vue');
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
   },
-]
+  {
+    path: '/user/:id',
+    name: 'User',
+    component: User,
+  },
+];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   scrollBehavior() {
     return { x: 0, y: 0 };
