@@ -3,11 +3,11 @@ const mysql = require('../db/mysql');
 module.exports.userMapping = (user) => {
   return {
     id: user.id,
-    first_name: user.first_name,
-    last_name: user.last_name,
+    firstName: user.first_name,
+    lastName: user.last_name,
     email: user.email,
     avatar: user.avatar,
-    create_Time: user.create_time,
+    createTime: user.create_time,
   };
 };
 

@@ -6,7 +6,7 @@
           home
         </span>
         <v-btn @click="getList">load user</v-btn>
-        <v-btn @click="createUser({ first_name: 'hi' })">create user</v-btn>
+        <v-btn @click="createUser({ firstName: 'hi' })">create user</v-btn>
       </v-col>
     </v-row>
     <v-list v-if="listData && listData.data" three-line>
@@ -21,7 +21,7 @@
 
         <v-list-item-content>
           <v-list-item-title
-            >{{ item.first_name }} {{ item.last_name }}</v-list-item-title
+            >{{ item.firstName }} {{ item.lastName }}</v-list-item-title
           >
           <v-list-item-subtitle>{{ item.email }}</v-list-item-subtitle>
         </v-list-item-content>
