@@ -81,10 +81,8 @@ const mutations = {
 
   refresh(state) {
     state.user = { ...info.user };
-    state.msg = {
-      error: { ...info.informationMessages.error },
-      success: { ...info.informationMessages.success },
-    };
+    state.msg.success = { ...info.user };
+    state.msg.error = { ...info.informationMessages };
     state.isValidated = false;
     state.isRefreshed = true;
   },

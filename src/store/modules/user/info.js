@@ -23,15 +23,8 @@ const validationMessages = {
   },
 };
 const informationMessages = {
-  error: {
-    firstName: 'Please Enter First Name',
-    lastName: 'Please Enter the Last Name',
-    email: 'Please Enter the E-mail',
-  },
-  success: {
-    firstName: 'Please Enter the First Name',
-    lastName: 'Please Enter the Last Name',
-    email: 'Please Enter the E-mail',
-  },
+  firstName: 'Please Enter First Name',
+  lastName: 'Please Enter the Last Name',
+  email: 'Please Enter the E-mail',
 };
 export default { user, regExp, validationMessages, informationMessages };
