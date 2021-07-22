@@ -87,7 +87,11 @@
   }
 }
 
-.v-list {
+.router {
+  text-decoration: none;
+}
+
+.userList {
   &.theme--light {
     &.v-sheet {
       :hover {
@@ -95,8 +99,6 @@
         cursor: pointer;
         .v-avatar {
           :hover {
-            animation-duration: 0.75s;
-            animation-name: fadein;
             background: none;
           }
           .v-responsive__sizer {
@@ -112,6 +114,12 @@
     }
   }
 }
-.router {
-  text-decoration: none;
+
+.create {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding-top: 6em;
+  background-color: rgba(33, 33, 33, 0.4);
 }

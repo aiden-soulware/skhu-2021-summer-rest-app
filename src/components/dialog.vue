@@ -1,5 +1,5 @@
 <template>
-  <v-card :class="{'close-header-content' : opt.showClose}">
+  <v-card :class="{ 'close-header-content': opt.showClose }">
     <!-- close btn -->
     <v-card-title v-if="opt.showClose" v- class="dialog-header-close">
       <v-btn icon dark @click="$emit('close')" class="btn-close-black">
@@ -7,19 +7,19 @@
       </v-btn>
     </v-card-title>
     <v-card-text>
-      <h1 v-if="title">{{title}}</h1>
+      <h1 v-if="title">{{ title }}</h1>
       <p v-if="message" v-html="message"></p>
     </v-card-text>
     <v-card-actions v-if="!opt.noActionButtons">
       <v-row class="ma-0">
         <v-col v-if="!opt.noCancel" class="pa-0 border-right-1">
           <v-btn class="text-red" block text @click="$emit('cancel')">
-            {{opt.cancelText}}
+            {{ opt.cancelText }}
           </v-btn>
         </v-col>
         <v-col class="pa-0">
           <v-btn block text class="text-azure" @click="$emit('ok')">
-            {{opt.okText}}
+            {{ opt.okText }}
           </v-btn>
         </v-col>
       </v-row>
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-
 export default {
   props: {
     inputData: {
@@ -40,31 +39,29 @@ export default {
       title: null,
       message: null,
       opt: {
-        showClose : false,
+        showClose: false,
         noCancel: false,
-        noActionButtons : false,
+        noActionButtons: false,
         cancelText: '취소', //'Cancel',
         okText: '확인', // 'Ok'
         persistent: false,
       },
-    }
+    };
   },
   watch: {
     // props가 변경되었을때,
     inputData: {
       immediate: true,
       handler() {
-        this.title = this.inputData.title
-        this.message = this.inputData.message
+        this.title = this.inputData.title;
+        this.message = this.inputData.message;
 
-        this.opt = Object.assign(this.opt, this.inputData.opt)
-      }
-    }
+        this.opt = Object.assign(this.opt, this.inputData.opt);
+      },
+    },
   },
-  methods: {
-  }
-}
+  methods: {},
+};
 </script>
 
-<style lang="scss" scoped>
-</style> 
+<style lang="scss" scoped></style>

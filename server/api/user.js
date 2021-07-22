@@ -23,3 +23,14 @@ module.exports.list = (req, res) => {
     res.json({ success: true, data: this.userListMapping(rows) });
   });
 };
+
+module.exports.find = (req, res) => {
+  const id = req.params.id || req.query.id;
+  const sql = `SELECT * FROM user WHERE id = ?`;
+
+  mysql.query(sql, id, (err, rows, fields) => {
+    if (err) return console.log('select err: ', err);
+
+    res.status(200).json({ success: true, data: this.userMapping(rows[0]) });
+  });
+};

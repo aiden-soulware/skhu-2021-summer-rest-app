@@ -8,5 +8,8 @@ router.use(cors());
 router.get('/list', function(req, res, next) {
   management.list(req, res);
 });
+router.get('/:id', function(req, res, next) {
+  management.find(req, res);
+});
 
 module.exports = router;

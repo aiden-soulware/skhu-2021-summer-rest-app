@@ -13,7 +13,7 @@
       <v-img :src="user.avatar"></v-img>
     </v-avatar>
 
-    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+    <h3>{{ user.firstName }} {{ user.lastName }}</h3>
     <p>{{ user.email }}</p>
   </div>
 </template>
@@ -28,17 +28,10 @@ export default {
   },
   computed: {
     ...mapState({
-      listData: (state) => state.users.listData,
-      user: (state) => state.users.user.data,
+      user: (state) => state.user.data,
     }),
   },
-  mounted() {
-    this.init();
-  },
   methods: {
-    init() {
-      console.log('home init...');
-    },
     back() {
       router.push({ name: 'Home' });
     },

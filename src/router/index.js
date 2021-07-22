@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 const Home = () => import(/* webpackChunkName: "common" */ '../views/home.vue');
-const User = () => import('../views/user.vue');
+const User = () => import('../views/user/index.vue');
 
 Vue.use(VueRouter);
 const routes = [

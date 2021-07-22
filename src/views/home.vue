@@ -1,15 +1,18 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
-        <span class="title">
-          home
-        </span>
-        <v-btn @click="getList">load user</v-btn>
-        <v-btn @click="createUser({ firstName: 'hi' })">create user</v-btn>
-      </v-col>
-    </v-row>
-    <v-list v-if="listData && listData.data" three-line>
+    <create class="create" v-if="isCreate" />
+    <div>
+      <v-row>
+        <v-col>
+          <span class="title">
+            home
+          </span>
+          <v-btn @click="getList">load user</v-btn>
+          <v-btn @click="createUser">create user</v-btn>
+        </v-col>
+      </v-row>
+    </div>
+    <v-list class="userList" v-if="listData && listData.data" three-line>
       <v-list-item
         v-for="(item, i) in listData.data"
         :key="`item-${i}`"
@@ -31,17 +34,20 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import router from '@/router';
+import create from '../components/create.vue';
 
 export default {
+  components: { create },
   data() {
     return {};
   },
   computed: {
     ...mapState({
-      listData: (state) => state.users.listData,
-      user: (state) => state.users.user.data,
+      listData: (state) => state.user.listData,
+      user: (state) => state.user.data,
+      isCreate: (state) => state.create.isCreate,
     }),
   },
   mounted() {
@@ -71,17 +77,15 @@ export default {
           this.$alert.fail('user load failed.');
         });
     },
-    createUser(item) {
-      this._createUser(item)
-        .then(() => {})
-        .catch(() => {
-          this.$alert.fail('user load failed.');
-        });
+    createUser() {
+      this._setIsCreate(true);
     },
+    ...mapMutations({
+      _setIsCreate: 'create/setIsCreate',
+    }),
     ...mapActions({
-      _getList: 'users/getList',
-      _getUser: 'users/getUser',
-      _createUser: 'users/createUser',
+      _getList: 'user/getList',
+      _getUser: 'user/getUser',
     }),
   },
 };
