@@ -11,5 +11,7 @@ router.get('/list', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   management.find(req, res);
 });
-
+router.post('/create', function(req, res, next) {
+  management.create(req, res);
+});
 module.exports = router;

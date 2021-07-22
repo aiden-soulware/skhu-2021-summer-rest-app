@@ -23,14 +23,23 @@ module.exports.list = (req, res) => {
     res.json({ success: true, data: this.userListMapping(rows) });
   });
 };
-
 module.exports.find = (req, res) => {
   const id = req.params.id || req.query.id;
   const sql = `SELECT * FROM user WHERE id = ?`;
 
   mysql.query(sql, id, (err, rows, fields) => {
-    if (err) return console.log('select err: ', err);
+    if (err) return console.log('find err: ', err);
 
     res.status(200).json({ success: true, data: this.userMapping(rows[0]) });
   });
+};
+module.exports.create = (req, res) => {
+  const { firstName, lastName, email } = req.body;
+  const sql = `INSERT INTO user(first_name, last_name, email) VALUES("${firstName}","${lastName}","${email}")`;
+  const msg = 'User created successfully';
+  mysql.query(sql, (err, rows, fields) => {
+    if (err) return console.log('create err: ', err);
+    console.log(msg);
+  });
+  res.status(200).json({ success: true, message: msg });
 };

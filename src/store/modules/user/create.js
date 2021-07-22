@@ -1,3 +1,4 @@
+import http from '@/utils/http';
 import info from './info';
 
 const state = {
@@ -79,12 +80,25 @@ const mutations = {
     state.msg.success[option] = '';
   },
 
+  // functions
+  initialize(state) {
+    state.user = { ...info.user };
+    state.msg.success = { ...info.user };
+    state.msg.error = { ...info.user };
+    state.isValidated = false;
+    state.isRefreshed = false;
+    state.isCreate = false;
+  },
   refresh(state) {
     state.user = { ...info.user };
     state.msg.success = { ...info.user };
     state.msg.error = { ...info.informationMessages };
     state.isValidated = false;
     state.isRefreshed = true;
+  },
+
+  submit(state) {
+    return http.process('user', 'create', state.user);
   },
 };
 

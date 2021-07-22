@@ -103,19 +103,20 @@ export default {
       return true;
     },
     submit() {
-      if (this.isValidated) console.log('true');
-      else console.log('false');
+      this._submit();
+      this._initialize();
     },
 
     close() {
-      this._refresh();
-      this._setIsCreate(false);
+      this._initialize();
     },
 
     ...mapMutations({
       _setUser: 'create/setUser',
       _setIsCreate: 'create/setIsCreate',
+      _initialize: 'create/initialize',
       _refresh: 'create/refresh',
+      _submit: 'create/submit',
     }),
     ...mapActions({
       _validation: 'create/validation',
