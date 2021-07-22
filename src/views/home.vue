@@ -46,7 +46,7 @@ export default {
   computed: {
     ...mapState({
       listData: (state) => state.user.listData,
-      user: (state) => state.user.data,
+      userInfo: (state) => state.user.info,
       isCreate: (state) => state.create.isCreate,
     }),
   },
@@ -69,9 +69,9 @@ export default {
       });
     },
     getUser(id) {
-      this._getUser(id)
+      this._getUserInfo(id)
         .then(() => {
-          router.push({ name: 'User', params: { id: this.user.id } });
+          router.push({ name: 'User', params: { id: this.userInfo.id } });
         })
         .catch(() => {
           this.$alert.fail('user load failed.');
@@ -85,7 +85,7 @@ export default {
     }),
     ...mapActions({
       _getList: 'user/getList',
-      _getUser: 'user/getUser',
+      _getUserInfo: 'user/getInfo',
     }),
   },
 };

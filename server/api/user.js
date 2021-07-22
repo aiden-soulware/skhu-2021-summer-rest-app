@@ -30,7 +30,7 @@ module.exports.find = (req, res) => {
   mysql.query(sql, id, (err, rows, fields) => {
     if (err) return console.log('find err: ', err);
 
-    res.status(200).json({ success: true, data: this.userMapping(rows[0]) });
+    res.status(200).json({ success: true, user: this.userMapping(rows[0]) });
   });
 };
 module.exports.create = (req, res) => {

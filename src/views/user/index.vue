@@ -21,14 +21,13 @@
 <script>
 import { mapState } from 'vuex';
 import router from '@/router';
-
 export default {
   data() {
     return {};
   },
   computed: {
     ...mapState({
-      user: (state) => state.user.data,
+      user: (state) => state.user.info,
     }),
   },
   methods: {
