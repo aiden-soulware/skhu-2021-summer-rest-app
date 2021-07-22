@@ -1,17 +1,19 @@
 import info from './info';
 
 const state = {
-  user: info.user,
-  defaltMsg: {
-    error: { ...info.messages.error },
-    success: { ...info.messages.success },
-  },
+  user: { ...info.user },
   msg: {
-    error: { ...info.messages.error },
-    success: { ...info.messages.success },
+    error: { ...info.validationMessages.error },
+    success: { ...info.validationMessages.success },
+  },
+  defaltMsg: {
+    error: { ...info.validationMessages.error },
+    success: { ...info.validationMessages.success },
   },
   reg: { ...info.regExp },
   isCreate: false,
+  isRefreshed: false,
+  isValidated: false,
 };
 
 const getters = {
@@ -21,6 +23,9 @@ const getters = {
   getReg(state) {
     return state.reg;
   },
+  getIsRefreshed(state) {
+    return state.isRefreshed;
+  },
 };
 
 const actions = {
@@ -28,6 +33,7 @@ const actions = {
   validation({ getters, commit }, option) {
     const user = getters.getUser;
     const reg = getters.getReg;
+    const isRefreshed = getters.getIsRefreshed;
     // message setting
     if (user[option] && user[option].length > 0) {
       if (reg[option].test(user[option])) {
@@ -37,24 +43,31 @@ const actions = {
         commit('setErrorMsg', option);
         commit('clearSuccessMsg', option);
       }
-    } else {
+    } else if (!isRefreshed) {
       commit('clearErrorMsg', option);
       commit('clearSuccessMsg', option);
     }
+    // validation
+    commit('setIsValidated');
   },
 };
 
 const mutations = {
-  setIsCreate(state, data) {
-    state.isCreate = data;
-  },
   setUser(state, data) {
     state.user = data;
   },
+  setIsCreate(state, data) {
+    state.isCreate = data;
+  },
   // validation
+  setIsValidated(state) {
+    if (Object.values(state.msg.success).includes(''))
+      state.isValidated = false;
+    else state.isValidated = true;
+  },
+  // message setting
   setErrorMsg(state, option) {
     state.msg.error[option] = state.defaltMsg.error[option];
-    console.log(state.defaltMsg.error[option]);
   },
   setSuccessMsg(state, option) {
     state.msg.success[option] = state.defaltMsg.success[option];
@@ -64,6 +77,16 @@ const mutations = {
   },
   clearSuccessMsg(state, option) {
     state.msg.success[option] = '';
+  },
+
+  refresh(state) {
+    state.user = { ...info.user };
+    state.msg = {
+      error: { ...info.informationMessages.error },
+      success: { ...info.informationMessages.success },
+    };
+    state.isValidated = false;
+    state.isRefreshed = true;
   },
 };
 

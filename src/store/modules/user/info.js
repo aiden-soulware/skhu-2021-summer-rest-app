@@ -10,17 +10,28 @@ const regExp = {
   lastName: reg.name,
   email: reg.email,
 };
-const messages = {
+const validationMessages = {
   error: {
-    firstName: 'Invalid first name',
-    lastName: 'Invalid last name',
-    email: 'Invalid e-mail',
+    firstName: 'Invalid First Name',
+    lastName: 'Invalid Last Name',
+    email: 'Invalid E-mail',
   },
   success: {
-    firstName: 'Valid first name',
-    lastName: 'Valid last name',
-    email: 'Valid e-mail',
+    firstName: 'Valid First Name',
+    lastName: 'Valid Last Name',
+    email: 'Valid E-mail',
   },
 };
-
-export default { user, regExp, messages };
+const informationMessages = {
+  error: {
+    firstName: 'Please Enter First Name',
+    lastName: 'Please Enter the Last Name',
+    email: 'Please Enter the E-mail',
+  },
+  success: {
+    firstName: 'Please Enter the First Name',
+    lastName: 'Please Enter the Last Name',
+    email: 'Please Enter the E-mail',
+  },
+};
+export default { user, regExp, validationMessages, informationMessages };
