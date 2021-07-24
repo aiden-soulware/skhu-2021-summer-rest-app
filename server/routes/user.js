@@ -14,6 +14,9 @@ router.get('/:id', function(req, res, next) {
 router.post('/create', function(req, res, next) {
   management.create(req, res);
 });
+router.post('/update', function(req, res, next) {
+  management.update(req, res);
+});
 router.post('/email', function(req, res, next) {
   management.emailCheck(req, res);
 });

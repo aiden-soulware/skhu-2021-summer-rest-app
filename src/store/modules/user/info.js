@@ -27,4 +27,9 @@ const informationMessages = {
   lastName: 'Please Fill in the Last Name form',
   email: 'Please Fill in the E-mail form',
 };
-export default { user, regExp, validationMessages, informationMessages };
+export default {
+  user,
+  regExp,
+  validationMessages,
+  informationMessages,
+};

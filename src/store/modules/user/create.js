@@ -12,15 +12,18 @@ const state = {
     success: { ...info.validationMessages.success },
   },
   reg: { ...info.regExp },
+  isValidated: { ...info.user },
   isCreate: false,
   isRefreshed: false,
-  isValidated: false,
   image: null,
 };
 
 const getters = {
   getUser(state) {
     return state.user;
+  },
+  getImage(state) {
+    return state.image;
   },
   getReg(state) {
     return state.reg;
@@ -30,6 +33,9 @@ const getters = {
   },
   getIsRefreshed(state) {
     return state.isRefreshed;
+  },
+  getIsValidated(state) {
+    return !Object.values(state.isValidated).includes(false);
   },
 };
 
@@ -47,7 +53,6 @@ const actions = {
       if (reg.email.test(user.email)) {
         // with database exsistance
         http.process('user', 'email', { email: user.email }).then((res) => {
-          console.log(res.success);
           if (res.success) {
             commit('setMessage', {
               option: 'email',
@@ -58,7 +63,8 @@ const actions = {
                 message: res.message,
               },
             });
-          } else
+            commit('setIsValidated', { option: 'email', isValidated: false });
+          } else {
             commit('setMessage', {
               option: 'email',
               success: {
@@ -68,6 +74,8 @@ const actions = {
                 message: '',
               },
             });
+            commit('setIsValidated', { option: 'email', isValidated: true });
+          }
         });
       } else {
         commit('setMessage', {
@@ -79,6 +87,7 @@ const actions = {
             message: defaultMsg.error.email,
           },
         });
+        commit('setIsValidated', { option: 'email', isValidated: false });
       }
     } else if (!isRefreshed) {
       commit('setMessage', {
@@ -90,15 +99,16 @@ const actions = {
           message: '',
         },
       });
+      commit('setIsValidated', { option: 'email', isValidated: false });
     }
     // validation
-    commit('setIsValidated');
   },
   validation({ getters, commit }, option) {
     const user = getters.getUser;
     const reg = getters.getReg;
     const defaultMsg = getters.getDefaulMsg;
     const isRefreshed = getters.getIsRefreshed;
+
     // message setting
     if (user[option] && user[option].length > 0) {
       if (reg[option].test(user[option])) {
@@ -111,6 +121,7 @@ const actions = {
             message: '',
           },
         });
+        commit('setIsValidated', { option: option, isValidated: true });
       } else {
         commit('setMessage', {
           option: option,
@@ -121,6 +132,7 @@ const actions = {
             message: defaultMsg.error[option],
           },
         });
+        commit('setIsValidated', { option: option, isValidated: false });
       }
     } else if (!isRefreshed) {
       commit('setMessage', {
@@ -132,24 +144,15 @@ const actions = {
           message: '',
         },
       });
+      commit('setIsValidated', { option: option, isValidated: false });
     }
-    // validation
-    commit('setIsValidated');
   },
-  submit({ commit }) {
-    http.process('user', 'create', state.user).then((res) => {
-      // email check
-      if (res.success) commit('initialize');
-      else
-        commit('setMessage', {
-          option: 'email',
-          success: {
-            message: '',
-          },
-          error: {
-            message: res.messsage,
-          },
-        });
+  submit({ getters, commit }) {
+    const user = getters.getUser;
+
+    // create user
+    return http.process('user', 'create', user).then((res) => {
+      commit('updateAvatar', res.user);
     });
   },
 };
@@ -165,10 +168,10 @@ const mutations = {
     state.isCreate = data;
   },
   // validation
-  setIsValidated(state) {
-    if (Object.values(state.msg.success).includes(''))
-      state.isValidated = false;
-    else state.isValidated = true;
+  setIsValidated(state, payload) {
+    const option = payload.option;
+    const isValidated = payload.isValidated;
+    state.isValidated[option] = isValidated;
   },
   // message setting
   setMessage(state, payload) {
@@ -189,7 +192,7 @@ const mutations = {
     state.user = { ...info.user };
     state.msg.success = { ...info.user };
     state.msg.error = { ...info.user };
-    state.isValidated = false;
+    state.isValidated = { ...info.user };
     state.isRefreshed = false;
     state.isCreate = false;
   },
@@ -197,21 +200,24 @@ const mutations = {
     state.user = { ...info.user };
     state.msg.success = { ...info.user };
     state.msg.error = { ...info.informationMessages };
-    state.isValidated = false;
+    state.isValidated = { ...info.user };
     state.isRefreshed = true;
   },
-
-  // submit(state) {
-  //   // http
-  //   //   .process('s3', 'upload', { name: 'avatar_tmp', file: state.image })
-  //   //   .then((res) => {
-  //   //     console.log(res);
-  //   //   });
-
-  //   http.process('user', 'create', state.user).then((res) => {
-  //     console.log(res.message);
-  //   });
-  // },
+  updateAvatar(state, user) {
+    // avatar upload
+    if (state.image)
+      return http
+        .process('s3', 'upload', {
+          name: `avatar_${user.id}`,
+          file: state.image,
+        })
+        .then((res) => {
+          http.process('user', 'update', {
+            ...user,
+            avatar: res.url,
+          });
+        });
+  },
 };
 
 export default {

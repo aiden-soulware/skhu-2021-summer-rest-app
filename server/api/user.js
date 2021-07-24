@@ -34,21 +34,41 @@ module.exports.find = (req, res) => {
   });
 };
 module.exports.create = (req, res) => {
-  const { firstName, lastName, email, avatar } = req.body;
+  const { firstName, lastName, email } = req.body;
 
-  // user creation
-  const input = `INSERT INTO user(first_name, last_name, email, avatar) VALUES("${firstName}","${lastName}","${email}","${avatar}")`;
-  mysql.query(input, (err, rows, fields) => {
+  // user create
+  const sql = `INSERT INTO user(first_name, last_name, email) VALUES("${firstName}","${lastName}","${email}")`;
+  mysql.query(sql, (err, rows, fields) => {
     if (err) return console.log('create err: ', err);
+    res.status(200).json({
+      success: true,
+      user: {
+        id: rows.insertId,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+      },
+      message: 'User created successfully',
+    });
   });
-  res.status(200).json({ success: true, message: 'User created successfully' });
+};
+
+module.exports.update = (req, res) => {
+  const { id, firstName, lastName, email, avatar } = req.body;
+
+  // user update
+  const sql = `UPDATE user SET first_name = "${firstName}", last_name = "${lastName}", email = "${email}", avatar = "${avatar}" WHERE id = "${id}"`;
+  mysql.query(sql, (err, rows, fields) => {
+    if (err) return console.log('update err: ', err);
+  });
+  res.status(200).json({ success: true, message: 'User updated successfully' });
 };
 
 module.exports.emailCheck = (req, res) => {
   // email check
   const sql = `SELECT id FROM user WHERE email = "${req.body.email}"`;
   mysql.query(sql, (err, rows, fields) => {
-    if (err) return console.log('email find err: ', err);
+    if (err) return console.log('email check err: ', err);
 
     if (rows == '') {
       res.status(200).json({

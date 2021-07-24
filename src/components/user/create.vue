@@ -45,7 +45,7 @@
             accept="image/*"
             label="Avatar"
             prepend-icon="mdi-camera-outline"
-            @change="selectFile"
+            @change="setImage"
           ></v-file-input>
         </v-card-text>
 
@@ -71,7 +71,12 @@
               <span>Refresh form</span>
             </v-tooltip>
           </v-slide-x-reverse-transition>
-          <v-btn :disabled="!isValidated" color="primary" text @click="submit">
+          <v-btn
+            :disabled="!_getIsValidated()"
+            color="primary"
+            text
+            @click="submit"
+          >
             Submit
           </v-btn>
         </v-card-actions>
@@ -81,7 +86,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   data() {
     return {};
@@ -91,7 +96,6 @@ export default {
       user: (state) => state.create.user,
       msg: (state) => state.create.msg,
       iscreate: (state) => state.create.iscreate,
-      isValidated: (state) => state.create.isValidated,
     }),
   },
 
@@ -112,27 +116,25 @@ export default {
       return true;
     },
     submit() {
-      this._submit();
+      this._submit()
+        .then(() => {
+          this.$alert.success('user create success.');
+          this._initialize();
+        })
+        .catch(() => {
+          this.$alert.fail('user create failed.');
+        });
     },
 
     close() {
       this._initialize();
     },
-    selectFile(file) {
-      // http.process('s3', 'upload', image);
+    setImage(file) {
       this._setImage(file);
-      // console.log(buffer);
-      // const blob = new Blob([file.name]);
-      // const url = URL.createObjectURL(blob);
-      // fetch(url)
-      //   .then((res) => res.text())
-      //   .then((text) => {
-      //     URL.revokeObjectURL(url);
-      //     console.log(text);
-      //     // 😀test txt
-      //   });
-      // console.log(url);
     },
+    ...mapGetters({
+      _getIsValidated: 'create/getIsValidated',
+    }),
     ...mapMutations({
       _setUser: 'create/setUser',
       _setImage: 'create/setImage',
