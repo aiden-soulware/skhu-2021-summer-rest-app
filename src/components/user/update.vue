@@ -3,8 +3,10 @@
     <v-col cols="12" sm="10" md="10" lg="6">
       <v-card>
         <div>
-          <v-card-title>Create new user</v-card-title>
-          <v-card-subtitle>type the following informations</v-card-subtitle>
+          <v-card-title>Edit user</v-card-title>
+          <v-card-subtitle
+            >you can change the user informations</v-card-subtitle
+          >
         </div>
         <v-card-text>
           <v-text-field
@@ -104,59 +106,56 @@ export default {
   },
   computed: {
     ...mapState({
-      user: (state) => state.create.user,
-      image: (state) => state.create.image,
-      msg: (state) => state.validation.msg,
+      user: (state) => state.update.user,
+      msg: (state) => state.update.msg,
+      image: (state) => state.update.image,
     }),
   },
 
   methods: {
     refresh() {
-      this._refreshValidationState();
       this._refresh();
     },
-    firstNameCheck(value) {
-      this._validation({ type: 'firstName', value: value });
+    firstNameCheck() {
+      this._validation('firstName');
       return true;
     },
-    lastNameCheck(value) {
-      this._validation({ type: 'lastName', value: value });
+    lastNameCheck() {
+      this._validation('lastName');
       return true;
     },
-    emailCheck(value) {
-      this._validation({ type: 'email', value: value });
+    emailCheck() {
+      this._validation('email');
       return true;
     },
     submit() {
       this._submit()
         .then(() => {
-          this.$alert.success('user create success.');
+          this.$alert.success('update success.');
           this._initialize();
         })
         .catch(() => {
-          this.$alert.fail('user create failed.');
+          this.$alert.fail('update failed.');
         });
     },
 
     close() {
-      this._refreshValidationState();
       this._initialize();
     },
     setImage(file) {
       this._setImage(file);
     },
     ...mapGetters({
-      _getIsValidated: 'validation/getIsValidated',
+      _getIsValidated: 'update/getIsValidated',
     }),
     ...mapMutations({
-      _setImage: 'create/setImage',
-      _refreshValidationState: 'validation/refresh',
+      _setImage: 'update/setImage',
+      _refresh: 'update/refresh',
     }),
     ...mapActions({
-      _validation: 'validation/main',
-      _initialize: 'create/initialize',
-      _refresh: 'create/refresh',
-      _submit: 'create/submit',
+      _validation: 'update/validation',
+      _initialize: 'update/initialize',
+      _submit: 'update/submit',
     }),
   },
 };

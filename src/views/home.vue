@@ -1,6 +1,7 @@
 <template>
   <div>
-    <create class="create" v-if="isCreate" />
+    <create class="userForm" v-if="isCreate" />
+    <update class="userForm" v-if="isUpdate" />
     <div>
       <v-row>
         <v-col>
@@ -13,21 +14,23 @@
       </v-row>
     </div>
     <v-list class="userList" v-if="listData && listData.data" three-line>
-      <v-list-item
-        v-for="(item, i) in listData.data"
-        :key="`item-${i}`"
-        @click="getUser(item.id)"
-      >
-        <v-list-item-avatar>
+      <v-list-item v-for="(item, i) in listData.data" :key="`item-${i}`">
+        <v-list-item-avatar @click="getUser(item.id)">
           <v-img :src="item.avatar"></v-img>
         </v-list-item-avatar>
 
-        <v-list-item-content>
+        <v-list-item-content @click="getUser(item.id)">
           <v-list-item-title
             >{{ item.firstName }} {{ item.lastName }}</v-list-item-title
           >
           <v-list-item-subtitle>{{ item.email }}</v-list-item-subtitle>
         </v-list-item-content>
+        <v-btn @click="updateUser(item)" icon>
+          <v-icon>mdi-pencil-outline</v-icon>
+        </v-btn>
+        <v-btn @click="deleteUser" icon>
+          <v-icon> mdi-delete-empty-outline</v-icon>
+        </v-btn>
       </v-list-item>
     </v-list>
   </div>
@@ -37,9 +40,10 @@
 import { mapState, mapMutations, mapActions } from 'vuex';
 import router from '@/router';
 import create from '../components/user/create.vue';
+import update from '../components/user/update.vue';
 
 export default {
-  components: { create },
+  components: { create, update },
   data() {
     return {};
   },
@@ -48,6 +52,7 @@ export default {
       listData: (state) => state.user.listData,
       userInfo: (state) => state.user.info,
       isCreate: (state) => state.create.isCreate,
+      isUpdate: (state) => state.update.isUpdate,
     }),
   },
   mounted() {
@@ -80,8 +85,19 @@ export default {
     createUser() {
       this._setIsCreate(true);
     },
+    updateUser(item) {
+      this._setUser(item);
+      this._setIsUpdate(true);
+    },
+    deleteUser() {
+      this._setIsDelete(true);
+    },
     ...mapMutations({
+      _setUser: 'update/setUser',
       _setIsCreate: 'create/setIsCreate',
+
+      _setIsUpdate: 'update/setIsUpdate',
+      _setIsDelete: 'delete/setIsDelete',
     }),
     ...mapActions({
       _getList: 'user/getList',

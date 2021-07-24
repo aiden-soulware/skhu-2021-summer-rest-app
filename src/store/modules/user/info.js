@@ -12,8 +12,8 @@ const regExp = {
 };
 const validationMessages = {
   error: {
-    firstName: 'Maximum 20 Letters',
-    lastName: 'Maximum 20 Letters',
+    firstName: 'Invalid First Name',
+    lastName: 'Invalid Last Name',
     email: 'Invalid E-mail',
   },
   success: {
