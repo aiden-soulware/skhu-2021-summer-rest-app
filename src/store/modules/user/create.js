@@ -193,6 +193,7 @@ const mutations = {
     state.msg.success = { ...info.user };
     state.msg.error = { ...info.user };
     state.isValidated = { ...info.user };
+    state.image = null;
     state.isRefreshed = false;
     state.isCreate = false;
   },
@@ -201,6 +202,7 @@ const mutations = {
     state.msg.success = { ...info.user };
     state.msg.error = { ...info.informationMessages };
     state.isValidated = { ...info.user };
+    state.image = null;
     state.isRefreshed = true;
   },
   updateAvatar(state, user) {

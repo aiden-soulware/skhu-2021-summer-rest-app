@@ -9,6 +9,7 @@
         <v-card-text>
           <v-text-field
             ref="firstName"
+            messages="maximum 20 letters."
             v-model="user.firstName"
             :rules="[() => !!user.firstName, firstNameCheck]"
             :error-messages="msg.error.firstName"
@@ -20,6 +21,7 @@
           ></v-text-field>
           <v-text-field
             ref="lastName"
+            messages="maximum 20 letters."
             v-model="user.lastName"
             :rules="[() => !!user.lastName, lastNameCheck]"
             :error-messages="msg.error.lastName"
@@ -31,6 +33,7 @@
           ></v-text-field>
           <v-text-field
             ref="email"
+            messages="e-mail should be unique."
             v-model="user.email"
             :rules="[() => !!user.email, emailCheck]"
             :error-messages="msg.error.email"
@@ -42,6 +45,9 @@
           ></v-text-field>
 
           <v-file-input
+            class="fileInput"
+            :value="image"
+            :messages="image ? '' : 'default'"
             accept="image/*"
             label="Avatar"
             prepend-icon="mdi-camera-outline"
@@ -95,6 +101,7 @@ export default {
     ...mapState({
       user: (state) => state.create.user,
       msg: (state) => state.create.msg,
+      image: (state) => state.create.image,
       iscreate: (state) => state.create.iscreate,
     }),
   },

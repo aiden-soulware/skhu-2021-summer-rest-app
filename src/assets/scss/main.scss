@@ -123,3 +123,9 @@
   padding-top: 6em;
   background-color: rgba(33, 33, 33, 0.4);
 }
+
+.fileInput {
+  .v-file-input__text {
+    cursor: pointer;
+  }
+}
