@@ -15,6 +15,7 @@ const state = {
   isCreate: false,
   isRefreshed: false,
   isValidated: false,
+  image: null,
 };
 
 const getters = {
@@ -24,6 +25,9 @@ const getters = {
   getReg(state) {
     return state.reg;
   },
+  getDefaulMsg(state) {
+    return state.defaltMsg;
+  },
   getIsRefreshed(state) {
     return state.isRefreshed;
   },
@@ -31,31 +35,131 @@ const getters = {
 
 const actions = {
   // validation
+  emailValidation({ getters, commit }) {
+    const user = getters.getUser;
+    const reg = getters.getReg;
+    const defaultMsg = getters.getDefaulMsg;
+    const isRefreshed = getters.getIsRefreshed;
+    // message setting
+    if (user.email && user.email.length > 0) {
+      // email validation
+      // with regular expression
+      if (reg.email.test(user.email)) {
+        // with database exsistance
+        http.process('user', 'email', { email: user.email }).then((res) => {
+          console.log(res.success);
+          if (res.success) {
+            commit('setMessage', {
+              option: 'email',
+              success: {
+                message: '',
+              },
+              error: {
+                message: res.message,
+              },
+            });
+          } else
+            commit('setMessage', {
+              option: 'email',
+              success: {
+                message: defaultMsg.success.email,
+              },
+              error: {
+                message: '',
+              },
+            });
+        });
+      } else {
+        commit('setMessage', {
+          option: 'email',
+          success: {
+            message: '',
+          },
+          error: {
+            message: defaultMsg.error.email,
+          },
+        });
+      }
+    } else if (!isRefreshed) {
+      commit('setMessage', {
+        option: 'email',
+        success: {
+          message: '',
+        },
+        error: {
+          message: '',
+        },
+      });
+    }
+    // validation
+    commit('setIsValidated');
+  },
   validation({ getters, commit }, option) {
     const user = getters.getUser;
     const reg = getters.getReg;
+    const defaultMsg = getters.getDefaulMsg;
     const isRefreshed = getters.getIsRefreshed;
     // message setting
     if (user[option] && user[option].length > 0) {
       if (reg[option].test(user[option])) {
-        commit('setSuccessMsg', option);
-        commit('clearErrorMsg', option);
+        commit('setMessage', {
+          option: option,
+          success: {
+            message: defaultMsg.success[option],
+          },
+          error: {
+            message: '',
+          },
+        });
       } else {
-        commit('setErrorMsg', option);
-        commit('clearSuccessMsg', option);
+        commit('setMessage', {
+          option: option,
+          success: {
+            message: '',
+          },
+          error: {
+            message: defaultMsg.error[option],
+          },
+        });
       }
     } else if (!isRefreshed) {
-      commit('clearErrorMsg', option);
-      commit('clearSuccessMsg', option);
+      commit('setMessage', {
+        option: option,
+        success: {
+          message: '',
+        },
+        error: {
+          message: '',
+        },
+      });
     }
     // validation
     commit('setIsValidated');
+  },
+  submit({ commit }) {
+    http.process('user', 'create', state.user).then((res) => {
+      // email check
+      if (res.success) commit('initialize');
+      else
+        commit('setMessage', {
+          option: 'email',
+          success: {
+            message: '',
+          },
+          error: {
+            message: res.messsage,
+          },
+        });
+    });
   },
 };
 
 const mutations = {
   setUser(state, data) {
     state.user = data;
+  },
+  setImage(state, data) {
+    state.image = data;
   },
   setIsCreate(state, data) {
     state.isCreate = data;
@@ -67,17 +171,17 @@ const mutations = {
     else state.isValidated = true;
   },
   // message setting
-  setErrorMsg(state, option) {
-    state.msg.error[option] = state.defaltMsg.error[option];
+  setMessage(state, payload) {
+    const success = payload.success,
+      error = payload.error,
+      option = payload.option;
+    if (success) state.msg.success[option] = success.message;
+    if (error) state.msg.error[option] = error.message;
   },
-  setSuccessMsg(state, option) {
-    state.msg.success[option] = state.defaltMsg.success[option];
-  },
-  clearErrorMsg(state, option) {
-    state.msg.error[option] = '';
-  },
-  clearSuccessMsg(state, option) {
-    state.msg.success[option] = '';
+  setSuccessMsg(state, payload) {
+    let message = payload.message,
+      option = payload.option;
+    state.msg.success[option] = message;
   },
 
   // functions
@@ -97,9 +201,17 @@ const mutations = {
     state.isRefreshed = true;
   },
 
-  submit(state) {
-    return http.process('user', 'create', state.user);
-  },
+  // submit(state) {
+  //   // http
+  //   //   .process('s3', 'upload', { name: 'avatar_tmp', file: state.image })
+  //   //   .then((res) => {
+  //   //     console.log(res);
+  //   //   });
+
+  //   http.process('user', 'create', state.user).then((res) => {
+  //     console.log(res.message);
+  //   });
+  // },
 };
 
 export default {

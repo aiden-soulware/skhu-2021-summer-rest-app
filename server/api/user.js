@@ -34,12 +34,32 @@ module.exports.find = (req, res) => {
   });
 };
 module.exports.create = (req, res) => {
-  const { firstName, lastName, email } = req.body;
-  const sql = `INSERT INTO user(first_name, last_name, email) VALUES("${firstName}","${lastName}","${email}")`;
-  const msg = 'User created successfully';
-  mysql.query(sql, (err, rows, fields) => {
+  const { firstName, lastName, email, avatar } = req.body;
+
+  // user creation
+  const input = `INSERT INTO user(first_name, last_name, email, avatar) VALUES("${firstName}","${lastName}","${email}","${avatar}")`;
+  mysql.query(input, (err, rows, fields) => {
     if (err) return console.log('create err: ', err);
-    console.log(msg);
   });
-  res.status(200).json({ success: true, message: msg });
+  res.status(200).json({ success: true, message: 'User created successfully' });
+};
+
+module.exports.emailCheck = (req, res) => {
+  // email check
+  const sql = `SELECT id FROM user WHERE email = "${req.body.email}"`;
+  mysql.query(sql, (err, rows, fields) => {
+    if (err) return console.log('email find err: ', err);
+
+    if (rows == '') {
+      res.status(200).json({
+        success: false,
+        message: 'You may use this email.',
+      });
+    } else
+      res.status(200).json({
+        success: true,
+        message: 'This e-mail already exists. Try another e-mail.',
+        id: rows[0].id,
+      });
+  });
 };

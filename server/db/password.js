@@ -5,3 +5,9 @@ module.exports.mysqlInfo = {
   database: 'rest-app-soulware',
   port: '3306',
 };
+
+module.exports.s3 = {
+  accessKeyId: 'AKIAUAPKCOCJJSEUT4MD',
+  secretAccessKey: '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',
+  config: { region: 'ap-northeast-2' },
+};

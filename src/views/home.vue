@@ -36,7 +36,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import router from '@/router';
-import create from '../components/create.vue';
+import create from '../components/user/create.vue';
 
 export default {
   components: { create },

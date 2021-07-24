@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="10" md="8" lg="6">
+    <v-col cols="12" sm="10" md="10" lg="6">
       <v-card>
         <div>
           <v-card-title>Create new user</v-card-title>
@@ -15,6 +15,7 @@
             :success-messages="msg.success.firstName"
             label="First Name"
             placeholder="Chanbin"
+            prepend-icon="mdi-alpha-f-box-outline"
             required
           ></v-text-field>
           <v-text-field
@@ -25,6 +26,7 @@
             :success-messages="msg.success.lastName"
             label="Last Name"
             placeholder="Lee"
+            prepend-icon="mdi-alpha-l-box-outline"
             required
           ></v-text-field>
           <v-text-field
@@ -35,9 +37,18 @@
             :success-messages="msg.success.email"
             label="E-mail"
             placeholder="nyamnyam0325@naver.com"
+            prepend-icon="mdi-at"
             required
           ></v-text-field>
+
+          <v-file-input
+            accept="image/*"
+            label="Avatar"
+            prepend-icon="mdi-camera-outline"
+            @change="selectFile"
+          ></v-file-input>
         </v-card-text>
+
         <v-divider class="mt-12"></v-divider>
         <v-card-actions>
           <v-btn class="dialog-header-close" @click="close" text>
@@ -71,7 +82,6 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-
 export default {
   data() {
     return {};
@@ -80,7 +90,6 @@ export default {
     ...mapState({
       user: (state) => state.create.user,
       msg: (state) => state.create.msg,
-
       iscreate: (state) => state.create.iscreate,
       isValidated: (state) => state.create.isValidated,
     }),
@@ -99,27 +108,42 @@ export default {
       return true;
     },
     emailCheck() {
-      this._validation('email');
+      this._emailValidation();
       return true;
     },
     submit() {
       this._submit();
-      this._initialize();
     },
 
     close() {
       this._initialize();
     },
-
+    selectFile(file) {
+      // http.process('s3', 'upload', image);
+      this._setImage(file);
+      // console.log(buffer);
+      // const blob = new Blob([file.name]);
+      // const url = URL.createObjectURL(blob);
+      // fetch(url)
+      //   .then((res) => res.text())
+      //   .then((text) => {
+      //     URL.revokeObjectURL(url);
+      //     console.log(text);
+      //     // 😀test txt
+      //   });
+      // console.log(url);
+    },
     ...mapMutations({
       _setUser: 'create/setUser',
+      _setImage: 'create/setImage',
       _setIsCreate: 'create/setIsCreate',
       _initialize: 'create/initialize',
       _refresh: 'create/refresh',
-      _submit: 'create/submit',
     }),
     ...mapActions({
       _validation: 'create/validation',
+      _emailValidation: 'create/emailValidation',
+      _submit: 'create/submit',
     }),
   },
 };
