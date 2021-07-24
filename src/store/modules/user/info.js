@@ -1,5 +1,5 @@
 const reg = {
-  name: /^[a-zA-Z]{1,20}$/,
+  name: /^[a-zA-Z]{2,20}$/,
   email: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*[.]{1}[a-zA-Z]{2,3}$/i,
 };
 
@@ -12,14 +12,14 @@ const regExp = {
 };
 const validationMessages = {
   error: {
-    firstName: 'Invalid First Name',
-    lastName: 'Invalid Last Name',
+    firstName: 'Maximum 20 Letters',
+    lastName: 'Maximum 20 Letters',
     email: 'Invalid E-mail',
   },
   success: {
-    firstName: 'valid',
-    lastName: 'valid',
-    email: 'valid',
+    firstName: ' ',
+    lastName: ' ',
+    email: ' ',
   },
 };
 export default {

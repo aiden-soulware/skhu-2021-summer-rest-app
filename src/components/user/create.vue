@@ -57,7 +57,12 @@
 
         <v-divider class="mt-12"></v-divider>
         <v-card-actions>
-          <v-btn class="dialog-header-close" @click="close" text>
+          <v-btn
+            color="#e74c3c"
+            class="dialog-header-close"
+            @click="close"
+            text
+          >
             Cancel
           </v-btn>
           <v-spacer></v-spacer>

@@ -61,7 +61,8 @@ const actions = {
             });
             break;
 
-          case 'firstName' || 'lastName':
+          case 'firstName':
+          case 'lastName':
             commit('setMessage', {
               type: type,
               option: 'success',
@@ -113,6 +114,7 @@ const mutations = {
   setIsCreate(state, data) {
     state.isCreate = data;
   },
+
   // message setting
   setMessage(state, payload) {
     const type = payload.type;
@@ -138,12 +140,6 @@ const mutations = {
         console.log('message setting error');
         return;
     }
-  },
-
-  setSuccessMsg(state, payload) {
-    let message = payload.message,
-      type = payload.type;
-    state.msg.success[type] = message;
   },
 
   // functions
