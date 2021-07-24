@@ -9,7 +9,7 @@
         <v-card-text>
           <v-text-field
             ref="firstName"
-            messages="maximum 20 letters."
+            messages="maximum 20 letters"
             v-model="user.firstName"
             :rules="[() => !!user.firstName, firstNameCheck]"
             :error-messages="msg.error.firstName"
@@ -21,7 +21,7 @@
           ></v-text-field>
           <v-text-field
             ref="lastName"
-            messages="maximum 20 letters."
+            messages="maximum 20 letters"
             v-model="user.lastName"
             :rules="[() => !!user.lastName, lastNameCheck]"
             :error-messages="msg.error.lastName"
@@ -33,7 +33,7 @@
           ></v-text-field>
           <v-text-field
             ref="email"
-            messages="e-mail should be unique."
+            messages="e-mail should be unique"
             v-model="user.email"
             :rules="[() => !!user.email, emailCheck]"
             :error-messages="msg.error.email"
@@ -119,7 +119,7 @@ export default {
       return true;
     },
     emailCheck() {
-      this._emailValidation();
+      this._validation('email');
       return true;
     },
     submit() {
@@ -143,15 +143,13 @@ export default {
       _getIsValidated: 'create/getIsValidated',
     }),
     ...mapMutations({
-      _setUser: 'create/setUser',
       _setImage: 'create/setImage',
       _setIsCreate: 'create/setIsCreate',
-      _initialize: 'create/initialize',
       _refresh: 'create/refresh',
     }),
     ...mapActions({
       _validation: 'create/validation',
-      _emailValidation: 'create/emailValidation',
+      _initialize: 'create/initialize',
       _submit: 'create/submit',
     }),
   },

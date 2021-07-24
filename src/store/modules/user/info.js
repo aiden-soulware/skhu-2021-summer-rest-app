@@ -17,19 +17,13 @@ const validationMessages = {
     email: 'Invalid E-mail',
   },
   success: {
-    firstName: 'Valid First Name',
-    lastName: 'Valid Last Name',
-    email: 'Valid E-mail',
+    firstName: 'valid',
+    lastName: 'valid',
+    email: 'valid',
   },
-};
-const informationMessages = {
-  firstName: 'Please Fill in the First Name form',
-  lastName: 'Please Fill in the Last Name form',
-  email: 'Please Fill in the E-mail form',
 };
 export default {
   user,
   regExp,
   validationMessages,
-  informationMessages,
 };

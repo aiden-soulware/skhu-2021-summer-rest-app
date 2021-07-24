@@ -3,18 +3,15 @@ import info from './info';
 
 const state = {
   user: { ...info.user },
+  reg: { ...info.regExp },
   msg: {
     error: { ...info.validationMessages.error },
     success: { ...info.validationMessages.success },
   },
-  defaltMsg: {
-    error: { ...info.validationMessages.error },
-    success: { ...info.validationMessages.success },
-  },
-  reg: { ...info.regExp },
+
   isValidated: { ...info.user },
   isCreate: false,
-  isRefreshed: false,
+
   image: null,
 };
 
@@ -28,123 +25,68 @@ const getters = {
   getReg(state) {
     return state.reg;
   },
-  getDefaulMsg(state) {
-    return state.defaltMsg;
-  },
-  getIsRefreshed(state) {
-    return state.isRefreshed;
-  },
   getIsValidated(state) {
-    return !Object.values(state.isValidated).includes(false);
+    return (
+      !Object.values(state.isValidated).includes(false) &&
+      !Object.values(state.isValidated).includes('')
+    );
   },
 };
 
 const actions = {
-  // validation
-  emailValidation({ getters, commit }) {
+  validation({ getters, commit }, type) {
     const user = getters.getUser;
     const reg = getters.getReg;
-    const defaultMsg = getters.getDefaulMsg;
-    const isRefreshed = getters.getIsRefreshed;
-    // message setting
-    if (user.email && user.email.length > 0) {
-      // email validation
-      // with regular expression
-      if (reg.email.test(user.email)) {
-        // with database exsistance
-        http.process('user', 'email', { email: user.email }).then((res) => {
-          if (res.success) {
-            commit('setMessage', {
-              option: 'email',
-              success: {
-                message: '',
-              },
-              error: {
-                message: res.message,
-              },
-            });
-            commit('setIsValidated', { option: 'email', isValidated: false });
-          } else {
-            commit('setMessage', {
-              option: 'email',
-              success: {
-                message: defaultMsg.success.email,
-              },
-              error: {
-                message: '',
-              },
-            });
-            commit('setIsValidated', { option: 'email', isValidated: true });
-          }
-        });
-      } else {
-        commit('setMessage', {
-          option: 'email',
-          success: {
-            message: '',
-          },
-          error: {
-            message: defaultMsg.error.email,
-          },
-        });
-        commit('setIsValidated', { option: 'email', isValidated: false });
-      }
-    } else if (!isRefreshed) {
-      commit('setMessage', {
-        option: 'email',
-        success: {
-          message: '',
-        },
-        error: {
-          message: '',
-        },
-      });
-      commit('setIsValidated', { option: 'email', isValidated: false });
-    }
-    // validation
-  },
-  validation({ getters, commit }, option) {
-    const user = getters.getUser;
-    const reg = getters.getReg;
-    const defaultMsg = getters.getDefaulMsg;
-    const isRefreshed = getters.getIsRefreshed;
 
-    // message setting
-    if (user[option] && user[option].length > 0) {
-      if (reg[option].test(user[option])) {
-        commit('setMessage', {
-          option: option,
-          success: {
-            message: defaultMsg.success[option],
-          },
-          error: {
-            message: '',
-          },
-        });
-        commit('setIsValidated', { option: option, isValidated: true });
+    if (user[type] && user[type].length > 0) {
+      // regex expression
+      if (reg[type].test(user[type])) {
+        switch (type) {
+          case 'email':
+            // email check
+            http.process('user', 'email', { email: user.email }).then((res) => {
+              if (res.success) {
+                commit('setMessage', {
+                  type: type,
+                  option: 'success',
+                  message: res.message,
+                });
+              } else {
+                commit('setMessage', {
+                  type: type,
+                  option: 'success',
+                  message: info.validationMessages.success.email,
+                });
+              }
+            });
+            break;
+
+          case 'firstName' || 'lastName':
+            commit('setMessage', {
+              type: type,
+              option: 'success',
+              message: info.validationMessages.success[type],
+            });
+            break;
+
+          default:
+            console.log('validation input type error');
+            return;
+        }
       } else {
+        // when regex expression returns false
         commit('setMessage', {
-          option: option,
-          success: {
-            message: '',
-          },
-          error: {
-            message: defaultMsg.error[option],
-          },
+          type: type,
+          option: 'error',
+          message: info.validationMessages.error[type],
         });
-        commit('setIsValidated', { option: option, isValidated: false });
       }
-    } else if (!isRefreshed) {
+    } else {
+      // refresh
       commit('setMessage', {
-        option: option,
-        success: {
-          message: '',
-        },
-        error: {
-          message: '',
-        },
+        type: type,
+        option: 'clear',
       });
-      commit('setIsValidated', { option: option, isValidated: false });
     }
   },
   submit({ getters, commit }) {
@@ -154,6 +96,10 @@ const actions = {
     return http.process('user', 'create', user).then((res) => {
       commit('updateAvatar', res.user);
     });
+  },
+  initialize({ commit }) {
+    commit('refresh');
+    commit('setIsCreate', false);
   },
 };
 
@@ -167,43 +113,46 @@ const mutations = {
   setIsCreate(state, data) {
     state.isCreate = data;
   },
-  // validation
-  setIsValidated(state, payload) {
-    const option = payload.option;
-    const isValidated = payload.isValidated;
-    state.isValidated[option] = isValidated;
-  },
   // message setting
   setMessage(state, payload) {
-    const success = payload.success,
-      error = payload.error,
-      option = payload.option;
-    if (success) state.msg.success[option] = success.message;
-    if (error) state.msg.error[option] = error.message;
+    const type = payload.type;
+    switch (payload.option) {
+      case 'success':
+        state.msg.success[type] = payload.message;
+        state.msg.error[type] = '';
+        state.isValidated[type] = true;
+        break;
+
+      case 'error':
+        state.msg.success[type] = '';
+        state.msg.error[type] = payload.message;
+        state.isValidated[type] = false;
+        break;
+
+      case 'clear':
+        state.msg.success[type] = '';
+        state.msg.error[type] = '';
+        state.isValidated[type] = false;
+        break;
+      default:
+        console.log('message setting error');
+        return;
+    }
   },
+
   setSuccessMsg(state, payload) {
     let message = payload.message,
-      option = payload.option;
-    state.msg.success[option] = message;
+      type = payload.type;
+    state.msg.success[type] = message;
   },
 
   // functions
-  initialize(state) {
+  refresh(state) {
     state.user = { ...info.user };
     state.msg.success = { ...info.user };
     state.msg.error = { ...info.user };
     state.isValidated = { ...info.user };
     state.image = null;
-    state.isRefreshed = false;
-    state.isCreate = false;
-  },
-  refresh(state) {
-    state.user = { ...info.user };
-    state.msg.success = { ...info.user };
-    state.msg.error = { ...info.informationMessages };
-    state.isValidated = { ...info.user };
-    state.image = null;
-    state.isRefreshed = true;
   },
   updateAvatar(state, user) {
     // avatar upload
