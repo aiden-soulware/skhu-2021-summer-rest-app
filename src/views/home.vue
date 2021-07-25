@@ -8,6 +8,14 @@
       :onSubmit="onCreate"
       class="userForm"
     />
+    <userForm
+      title="hi"
+      subtitle="hello"
+      v-if="isUpdate"
+      :setState="_setIsUpdate"
+      :onSubmit="onUpdate"
+      class="userForm"
+    />
     <div>
       <v-row>
         <v-col>
@@ -95,25 +103,33 @@ export default {
       this._onCreate(form).then((res) => {
         if (res.success) {
           this._updateAvatar(res.user);
-          this.$alert.success(`user create success${this.errorMsg}`);
+          this.$alert.success(`user create success${this.errorMsg}.`);
         } else this.$alert.fail('user create failed.');
       });
     },
     updateUser(info) {
       this._setIsUpdate(true);
-      this._setUser(info);
+      this._setForm(info);
+    },
+    async onUpdate(form) {
+      await this._updateAvatar(form);
+      if (this.errorMsg === '') {
+        this.$alert.success('user update success.');
+      } else this.$alert.fail('user update failed.');
     },
     deleteUser() {
       this._setIsDelete(true);
     },
     ...mapMutations({
       _setIsCreate: 'create/setIsCreate',
+      _setIsUpdate: 'update/setIsUpdate',
+      _setForm: 'form/setUser',
       _updateAvatar: 'image/updateAvatar',
     }),
     ...mapActions({
       _getList: 'user/getList',
       _getUser: 'user/getUser',
-      _onCreate: 'create/submit',
+      _onCreate: 'create/onCreate',
     }),
   },
 };

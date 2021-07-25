@@ -19,6 +19,7 @@ const mutations = {
   },
   updateAvatar(state, user) {
     // avatar upload
+    state.message = '';
     if (state.image)
       http
         .process('s3', 'upload', {
@@ -27,7 +28,7 @@ const mutations = {
         })
         .then((res) => {
           state.image = null;
-          http
+          return http
             .process('user', 'update', {
               ...user,
               avatar: res.url,

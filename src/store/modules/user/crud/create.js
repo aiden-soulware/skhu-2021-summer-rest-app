@@ -14,10 +14,7 @@ const getters = {
 };
 
 const actions = {
-  refresh({ commit }) {
-    commit('refresh');
-  },
-  submit(context, form) {
+  onCreate(context, form) {
     // create user
     return http.process('user', 'create', form);
   },

@@ -1,9 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import image from './modules/image';
-import user from './modules/user';
 import form from './modules/user/form';
-import create from './modules/user/create';
+import user from './modules/user/crud/read';
+import create from './modules/user/crud/create';
+import update from './modules/user/crud/update';
+
 import validation from './modules/user/validation';
 
 Vue.use(Vuex);
@@ -14,6 +16,7 @@ export default new Vuex.Store({
     user,
     form,
     create,
+    update,
     validation,
   },
 });

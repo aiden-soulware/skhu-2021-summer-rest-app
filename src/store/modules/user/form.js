@@ -9,6 +9,9 @@ const getters = {};
 const actions = {};
 
 const mutations = {
+  setUser(state, data) {
+    state.user = data;
+  },
   refresh(state) {
     state.user = { ...info.user };
   },
