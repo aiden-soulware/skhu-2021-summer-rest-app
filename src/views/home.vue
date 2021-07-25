@@ -1,7 +1,6 @@
 <template>
   <div>
     <create class="userForm" v-if="isCreate" />
-    <update class="userForm" v-if="isUpdate" />
     <div>
       <v-row>
         <v-col>
@@ -40,17 +39,16 @@
 import { mapState, mapMutations, mapActions } from 'vuex';
 import router from '@/router';
 import create from '../components/user/create.vue';
-import update from '../components/user/update.vue';
 
 export default {
-  components: { create, update },
+  components: { create },
   data() {
     return {};
   },
   computed: {
     ...mapState({
       listData: (state) => state.user.listData,
-      userInfo: (state) => state.user.info,
+      user: (state) => state.user.user,
       isCreate: (state) => state.create.isCreate,
       isUpdate: (state) => state.update.isUpdate,
     }),
@@ -74,9 +72,9 @@ export default {
       });
     },
     getUser(id) {
-      this._getUserInfo(id)
+      this._getUser(id)
         .then(() => {
-          router.push({ name: 'User', params: { id: this.userInfo.id } });
+          router.push({ name: 'User', params: { id: this.user.id } });
         })
         .catch(() => {
           this.$alert.fail('user load failed.');
@@ -87,21 +85,18 @@ export default {
     },
     updateUser(item) {
       this._setUser(item);
-      this._setIsUpdate(true);
     },
     deleteUser() {
       this._setIsDelete(true);
     },
     ...mapMutations({
-      _setUser: 'update/setUser',
+      _setUser: 'user/setUser',
       _setIsCreate: 'create/setIsCreate',
-
-      _setIsUpdate: 'update/setIsUpdate',
       _setIsDelete: 'delete/setIsDelete',
     }),
     ...mapActions({
       _getList: 'user/getList',
-      _getUserInfo: 'user/getInfo',
+      _getUser: 'user/getUser',
     }),
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="10" md="10" lg="6">
+    <v-col class="card" cols="12" sm="10" md="10" lg="6">
       <v-card>
         <div>
           <v-card-title>Create new user</v-card-title>
@@ -105,7 +105,7 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.create.user,
-      image: (state) => state.create.image,
+      image: (state) => state.image.image,
       msg: (state) => state.validation.msg,
     }),
   },
@@ -129,7 +129,8 @@ export default {
     },
     submit() {
       this._submit()
-        .then(() => {
+        .then((res) => {
+          this._updateAvatar(res.user);
           this.$alert.success('user create success.');
           this._initialize();
         })
@@ -149,8 +150,9 @@ export default {
       _getIsValidated: 'validation/getIsValidated',
     }),
     ...mapMutations({
-      _setImage: 'create/setImage',
       _refreshValidationState: 'validation/refresh',
+      _setImage: 'image/setImage',
+      _updateAvatar: 'image/updateAvatar',
     }),
     ...mapActions({
       _validation: 'validation/main',

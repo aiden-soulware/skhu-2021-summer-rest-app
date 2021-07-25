@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     ...mapState({
-      user: (state) => state.user.info,
+      user: (state) => state.user.user,
     }),
   },
   methods: {

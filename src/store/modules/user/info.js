@@ -3,8 +3,6 @@ const reg = {
   email: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*[.]{1}[a-zA-Z]{2,3}$/i,
 };
 
-const user = { firstName: '', lastName: '', email: '' };
-
 const regExp = {
   firstName: reg.name,
   lastName: reg.name,
@@ -22,6 +20,9 @@ const validationMessages = {
     email: ' ',
   },
 };
+
+let user = { firstName: '', lastName: '', email: '' };
+
 export default {
   user,
   regExp,
