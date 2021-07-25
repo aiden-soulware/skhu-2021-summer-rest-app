@@ -105,8 +105,9 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.create.user,
-      image: (state) => state.image.image,
       msg: (state) => state.validation.msg,
+      image: (state) => state.image.image,
+      errorMsg: (state) => state.image.message,
     }),
   },
 
@@ -131,7 +132,7 @@ export default {
       this._submit()
         .then((res) => {
           this._updateAvatar(res.user);
-          this.$alert.success('user create success.');
+          this.$alert.success(`user create success${this.errorMsg}`);
           this._initialize();
         })
         .catch(() => {

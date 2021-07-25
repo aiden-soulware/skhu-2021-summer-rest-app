@@ -2,6 +2,7 @@ import http from '@/utils/http';
 
 const state = {
   image: null,
+  message: '',
 };
 
 const getters = {
@@ -19,16 +20,20 @@ const mutations = {
   updateAvatar(state, user) {
     // avatar upload
     if (state.image)
-      return http
+      http
         .process('s3', 'upload', {
           name: `avatar_${user.id}`,
           file: state.image,
         })
         .then((res) => {
-          http.process('user', 'update', {
-            ...user,
-            avatar: res.url,
-          });
+          http
+            .process('user', 'update', {
+              ...user,
+              avatar: res.url,
+            })
+            .catch(() => {
+              state.message = ', but avatar update failed';
+            });
         });
   },
 };
