@@ -26,6 +26,7 @@ const mutations = {
           file: state.image,
         })
         .then((res) => {
+          state.image = null;
           http
             .process('user', 'update', {
               ...user,

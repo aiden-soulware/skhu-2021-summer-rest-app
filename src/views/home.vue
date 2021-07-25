@@ -1,6 +1,13 @@
 <template>
   <div>
-    <create class="userForm" v-if="isCreate" />
+    <userForm
+      title="hi"
+      subtitle="hello"
+      v-if="isCreate"
+      :setState="_setIsCreate"
+      :onSubmit="onCreate"
+      class="userForm"
+    />
     <div>
       <v-row>
         <v-col>
@@ -38,19 +45,20 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import router from '@/router';
-import create from '../components/user/create.vue';
+import userForm from '../components/user/form.vue';
 
 export default {
-  components: { create },
+  components: { userForm },
   data() {
     return {};
   },
   computed: {
     ...mapState({
-      listData: (state) => state.user.listData,
       user: (state) => state.user.user,
+      listData: (state) => state.user.listData,
       isCreate: (state) => state.create.isCreate,
       isUpdate: (state) => state.update.isUpdate,
+      errorMsg: (state) => state.image.message,
     }),
   },
   mounted() {
@@ -83,20 +91,29 @@ export default {
     createUser() {
       this._setIsCreate(true);
     },
-    updateUser(item) {
-      this._setUser(item);
+    onCreate(form) {
+      this._onCreate(form).then((res) => {
+        if (res.success) {
+          this._updateAvatar(res.user);
+          this.$alert.success(`user create success${this.errorMsg}`);
+        } else this.$alert.fail('user create failed.');
+      });
+    },
+    updateUser(info) {
+      this._setIsUpdate(true);
+      this._setUser(info);
     },
     deleteUser() {
       this._setIsDelete(true);
     },
     ...mapMutations({
-      _setUser: 'user/setUser',
       _setIsCreate: 'create/setIsCreate',
-      _setIsDelete: 'delete/setIsDelete',
+      _updateAvatar: 'image/updateAvatar',
     }),
     ...mapActions({
       _getList: 'user/getList',
       _getUser: 'user/getUser',
+      _onCreate: 'create/submit',
     }),
   },
 };
