@@ -8,5 +8,8 @@ router.use(cors());
 router.post('/upload', function(req, res, next) {
   management.upload(req, res);
 });
+router.post('/delete', function(req, res, next) {
+  management.delete(req, res);
+});
 
 module.exports = router;

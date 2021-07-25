@@ -57,7 +57,7 @@ const http = {
         let newParmas = params;
         if (info.task == 'uploadFile') {
           const formData = new FormData();
-          formData.append('name', params.name);
+          formData.append('id', params.id);
           formData.append('file', params.file);
           newParmas = formData;
           headers = { 'content-type': 'multipart/form-data' };

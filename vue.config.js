@@ -12,4 +12,5 @@ module.exports = {
     },
   },
   outputDir: './server/',
+  lintOnSave: false,
 };

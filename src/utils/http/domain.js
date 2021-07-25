@@ -9,5 +9,6 @@ export default {
   },
   s3: {
     upload: { task: 'uploadFile', url: `/s3/upload` },
+    delete: { task: 'post', url: `/s3/delete` },
   },
 };

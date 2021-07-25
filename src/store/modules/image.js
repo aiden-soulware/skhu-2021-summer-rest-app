@@ -23,7 +23,7 @@ const mutations = {
     if (state.image)
       http
         .process('s3', 'upload', {
-          name: `avatar_${user.id}`,
+          id: user.id,
           file: state.image,
         })
         .then((res) => {

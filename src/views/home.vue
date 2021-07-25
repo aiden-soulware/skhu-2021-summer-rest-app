@@ -42,7 +42,7 @@
         <v-btn @click="updateUser(item)" icon>
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>
-        <v-btn @click="deleteUser(item.id)" icon>
+        <v-btn @click="deleteUser(item)" icon>
           <v-icon> mdi-delete-empty-outline</v-icon>
         </v-btn>
       </v-list-item>
@@ -53,7 +53,6 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import userForm from '../components/user/form.vue';
-import http from '@/utils/http';
 import router from '@/router';
 
 export default {
@@ -63,8 +62,8 @@ export default {
   },
   computed: {
     ...mapState({
-      user: (state) => state.user.user,
-      listData: (state) => state.user.listData,
+      user: (state) => state.load.user,
+      listData: (state) => state.load.listData,
       isCreate: (state) => state.create.isCreate,
       isUpdate: (state) => state.update.isUpdate,
       errorMsg: (state) => state.image.message,
@@ -72,6 +71,7 @@ export default {
   },
   mounted() {
     this.init();
+    this._getList();
   },
   methods: {
     init() {
@@ -105,10 +105,12 @@ export default {
       this._setIsUpdate(true);
       this._setForm(info);
     },
-    deleteUser(id) {
-      return http.process('user', 'delete', { id: id }).then((res) => {
-        if (res.success) this.$alert.success(res.message);
-        else this.$alert.fail(res.message);
+    deleteUser(user) {
+      this._onDelete(user).then((res) => {
+        if (res.success) {
+          this.$alert.success(res.message);
+          this._getList();
+        } else this.$alert.fail(res.message);
       });
     },
     onCreate(form) {
@@ -116,6 +118,7 @@ export default {
         if (res.success) {
           this._updateAvatar(res.user);
           this.$alert.success(`user create success${this.errorMsg}.`);
+          this._getList();
         } else this.$alert.fail('user create failed.');
       });
     },
@@ -123,6 +126,7 @@ export default {
       await this._updateAvatar(form);
       if (this.errorMsg === '') {
         this.$alert.success('user update success.');
+        this._getList();
       } else this.$alert.fail('user update failed.');
     },
     ...mapMutations({
@@ -132,9 +136,10 @@ export default {
       _updateAvatar: 'image/updateAvatar',
     }),
     ...mapActions({
-      _getList: 'user/getList',
-      _getUser: 'user/getUser',
+      _getList: 'load/getList',
+      _getUser: 'load/getUser',
       _onCreate: 'create/onCreate',
+      _onDelete: 'remove/onDelete',
     }),
   },
 };
