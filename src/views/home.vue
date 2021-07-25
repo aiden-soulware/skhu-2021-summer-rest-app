@@ -42,7 +42,7 @@
         <v-btn @click="updateUser(item)" icon>
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>
-        <v-btn @click="deleteUser" icon>
+        <v-btn @click="deleteUser(item.id)" icon>
           <v-icon> mdi-delete-empty-outline</v-icon>
         </v-btn>
       </v-list-item>
@@ -52,8 +52,9 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import router from '@/router';
 import userForm from '../components/user/form.vue';
+import http from '@/utils/http';
+import router from '@/router';
 
 export default {
   components: { userForm },
@@ -96,8 +97,19 @@ export default {
           this.$alert.fail('user load failed.');
         });
     },
+
     createUser() {
       this._setIsCreate(true);
+    },
+    updateUser(info) {
+      this._setIsUpdate(true);
+      this._setForm(info);
+    },
+    deleteUser(id) {
+      return http.process('user', 'delete', { id: id }).then((res) => {
+        if (res.success) this.$alert.success(res.message);
+        else this.$alert.fail(res.message);
+      });
     },
     onCreate(form) {
       this._onCreate(form).then((res) => {
@@ -107,18 +119,11 @@ export default {
         } else this.$alert.fail('user create failed.');
       });
     },
-    updateUser(info) {
-      this._setIsUpdate(true);
-      this._setForm(info);
-    },
     async onUpdate(form) {
       await this._updateAvatar(form);
       if (this.errorMsg === '') {
         this.$alert.success('user update success.');
       } else this.$alert.fail('user update failed.');
-    },
-    deleteUser() {
-      this._setIsDelete(true);
     },
     ...mapMutations({
       _setIsCreate: 'create/setIsCreate',

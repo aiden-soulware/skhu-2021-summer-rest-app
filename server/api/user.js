@@ -64,6 +64,17 @@ module.exports.update = (req, res) => {
   res.status(200).json({ success: true, message: 'User updated successfully' });
 };
 
+module.exports.delete = (req, res) => {
+  const id = req.body.id;
+
+  // user delete
+  const sql = `DELETE FROM user WHERE id = "${id}"`;
+  mysql.query(sql, (err, rows, fields) => {
+    if (err) return res.json({ success: false, message: 'User delete failed' });
+  });
+  res.json({ success: true, message: 'User delete successfully' });
+};
+
 module.exports.emailCheck = (req, res) => {
   // email check
   const sql = `SELECT id FROM user WHERE email = "${req.body.email}"`;
