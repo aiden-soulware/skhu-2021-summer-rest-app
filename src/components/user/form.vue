@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col class="card" cols="12" sm="10" md="10" lg="6">
+    <v-dialog v-model="model" max-width="700" persistent>
       <v-card>
         <div>
           <v-card-title>{{ title }}</v-card-title>
@@ -92,7 +92,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-col>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -102,7 +102,7 @@ export default {
   data() {
     return {};
   },
-  props: ['title', 'subtitle', 'setState', 'onSubmit'],
+  props: ['title', 'subtitle', 'model', 'setState', 'onSubmit'],
   computed: {
     ...mapState({
       user: (state) => state.form.user,

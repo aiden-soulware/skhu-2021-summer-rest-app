@@ -1,17 +1,17 @@
 <template>
   <div>
     <userForm
-      title="hi"
-      subtitle="hello"
-      v-if="isCreate"
+      title="Create"
+      subtitle="type the following new user informations"
+      :model="isCreate"
       :setState="_setIsCreate"
       :onSubmit="onCreate"
       class="userForm"
     />
     <userForm
-      title="hi"
-      subtitle="hello"
-      v-if="isUpdate"
+      title="Edit"
+      subtitle="you can change the user informations "
+      :model="isUpdate"
       :setState="_setIsUpdate"
       :onSubmit="onUpdate"
       class="userForm"
@@ -89,6 +89,7 @@ export default {
       });
     },
     getUser(id) {
+      console.log(id);
       this._getUser(id)
         .then(() => {
           router.push({ name: 'User', params: { id: this.user.id } });
