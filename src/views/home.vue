@@ -10,7 +10,7 @@
     />
     <userForm
       title="Edit"
-      subtitle="you can change the user informations "
+      subtitle="change the user informations "
       :model="isUpdate"
       :setState="_setIsUpdate"
       :onSubmit="onUpdate"
@@ -104,7 +104,7 @@ export default {
     },
     updateUser(info) {
       this._setIsUpdate(true);
-      this._setForm(info);
+      this._setForm({ ...info });
     },
     deleteUser(user) {
       this._onDelete(user).then((res) => {

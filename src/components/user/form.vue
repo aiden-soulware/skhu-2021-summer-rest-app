@@ -102,7 +102,7 @@ export default {
   data() {
     return {};
   },
-  props: ['title', 'subtitle', 'model', 'setState', 'onSubmit'],
+  props: ['title', 'subtitle', 'model', 'placeholder', 'setState', 'onSubmit'],
   computed: {
     ...mapState({
       user: (state) => state.form.user,

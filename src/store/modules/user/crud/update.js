@@ -1,11 +1,11 @@
+import info from '../info';
+
 const state = {
+  user: { ...info.user },
   isUpdate: false,
 };
 
 const getters = {
-  getUser(state) {
-    return state.user;
-  },
   getIsUpdate(state) {
     return state.getIsUpdate;
   },
@@ -16,6 +16,9 @@ const actions = {};
 const mutations = {
   setIsUpdate(state, data) {
     state.isUpdate = data;
+  },
+  setUser(state, data) {
+    state.user = data;
   },
 };
 
